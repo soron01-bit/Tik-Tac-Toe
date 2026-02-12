@@ -7,14 +7,18 @@ body{
     text-align: center;
     height: 100vmin;
 }
-
+ul{
+    color: black;
+}
 h1{
     margin-bottom: 50px;
 }
 @media screen and (max-width: 600px) {
     h1{
         margin-bottom: 200px;
+        margin-top: 20px;
     }
+    
 }
 
 
@@ -25,13 +29,22 @@ h1{
     align-items: center;
 }
 .game{
-    height: 60vmin;
-    width: 60vmin;
+    height: 62vmin;
+    width: 62vmin;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     gap: 1.5vmin;
+}
+@media screen and (max-width: 600px){
+    .game{
+        gap: 3.2vmin;
+        display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 1.8rem;
+    }
 }
 
 .box {
