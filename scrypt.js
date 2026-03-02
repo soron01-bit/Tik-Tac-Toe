@@ -4,7 +4,8 @@ let newGameBtn = document.querySelector("#new-btn");
 let msgContainer = document.querySelector(".msg-container");
 let msg = document.querySelector("#msg");
 
-let turnO = true; //playerX, playerO
+// let turnO = true; //playerX, playerO
+let isPlayerTurn = true;  // Player = O
 let count = 0; //To Track Draw
 
 const winPatterns = [
@@ -18,34 +19,146 @@ const winPatterns = [
   [6, 7, 8],
 ];
 
+// const resetGame = () => {
+//   // turnO = true;
+//   count = 0;
+//   enableBoxes();
+//   msgContainer.classList.add("hide");
+// };
+
 const resetGame = () => {
   turnO = true;
+  isPlayerTurn = true;   // ✅ ekhane thakbe
   count = 0;
-  enableBoxes();
+
+  boxes.forEach((box) => {
+    box.disabled = false;
+    box.innerText = "";
+  });
+
   msgContainer.classList.add("hide");
+  strike.style.width = "0";
 };
 
-boxes.forEach((box) => {
+
+// boxes.forEach((box) => {
+//   box.addEventListener("click", () => {
+//     if (turnO) {
+//       //playerO
+//       box.innerText = "O";
+//       turnO = false;
+//     } else {
+//       //playerX
+//       box.innerText = "X";
+//       turnO = true;
+//     }
+//     box.disabled = true;
+//     count++;
+
+//     let isWinner = checkWinner();
+
+//     if (count === 9 && !isWinner) {
+//       gameDraw();
+//     }
+//   });
+// });
+
+//test
+
+boxes.forEach((box, index) => {
   box.addEventListener("click", () => {
-    if (turnO) {
-      //playerO
-      box.innerText = "O";
-      turnO = false;
-    } else {
-      //playerX
-      box.innerText = "X";
-      turnO = true;
-    }
+    if (!isPlayerTurn || box.innerText !== "") return;
+
+    // Player move
+    box.innerText = "O";
     box.disabled = true;
     count++;
 
     let isWinner = checkWinner();
+    if (isWinner) return;
 
-    if (count === 9 && !isWinner) {
+    if (count === 9) {
       gameDraw();
+      return;
     }
+
+    // isPlayerTurn = true;
+    setTimeout(computerMove, 500);
   });
 });
+
+const computerMove = () => {
+
+  // 1️⃣ Try to Win
+  for (let pattern of winPatterns) {
+    let [a, b, c] = pattern;
+
+    let values = [
+      boxes[a].innerText,
+      boxes[b].innerText,
+      boxes[c].innerText
+    ];
+
+    if (
+      values.filter(v => v === "X").length === 2 &&
+      values.includes("")
+    ) {
+      let emptyIndex = pattern[values.indexOf("")];
+      boxes[emptyIndex].innerText = "X";
+      boxes[emptyIndex].disabled = true;
+      count++;
+      if (checkWinner()) return;
+      isPlayerTurn = true;
+      return;
+    }
+  }
+
+  // 2️⃣ Block Player Win
+  for (let pattern of winPatterns) {
+    let [a, b, c] = pattern;
+
+    let values = [
+      boxes[a].innerText,
+      boxes[b].innerText,
+      boxes[c].innerText
+    ];
+
+    if (
+      values.filter(v => v === "O").length === 2 &&
+      values.includes("")
+    ) {
+      let emptyIndex = pattern[values.indexOf("")];
+      boxes[emptyIndex].innerText = "X";
+      boxes[emptyIndex].disabled = true;
+      count++;
+      if (checkWinner()) return;
+      isPlayerTurn = true;
+      return;
+    }
+  }
+
+  // 3️⃣ Otherwise Random Move
+  let emptyBoxes = [];
+
+  boxes.forEach((box, index) => {
+    if (box.innerText === "") {
+      emptyBoxes.push(index);
+    }
+  });
+
+  if (emptyBoxes.length === 0) return;
+
+  let randomIndex = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
+
+  boxes[randomIndex].innerText = "X";
+  boxes[randomIndex].disabled = true;
+  count++;
+
+  checkWinner();
+  isPlayerTurn = true;
+};
+
+//testf
 
 const gameDraw = () => {
   msg.innerText = `Game was a Draw.`;
@@ -89,3 +202,5 @@ const checkWinner = () => {
 
 newGameBtn.addEventListener("click", resetGame);
 resetBtn.addEventListener("click", resetGame);
+
+
