@@ -185,6 +185,11 @@ const enableBoxes = () => {
 };
 
 const showWinner = (winner) => {
+
+  if ("vibrate" in navigator) {
+  navigator.vibrate([200, 100, 200]);
+}
+
   msg.innerText = `Congratulations, Winner is ${winner}`;
   msgContainer.classList.remove("hide");
   disableBoxes();
