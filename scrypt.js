@@ -70,9 +70,9 @@ boxes.forEach((box, index) => {
     if (!isPlayerTurn || box.innerText !== "") return;
 
      // 📳 Haptic feedback
-    if (navigator.vibrate) {
-      navigator.vibrate(50);
-    }
+    if ("vibrate" in navigator) {
+  navigator.vibrate(100);
+}
 
     // Player move
     box.innerText = "O";
