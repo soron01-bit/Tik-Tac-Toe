@@ -69,6 +69,11 @@ boxes.forEach((box, index) => {
   box.addEventListener("click", () => {
     if (!isPlayerTurn || box.innerText !== "") return;
 
+     // 📳 Haptic feedback
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
+
     // Player move
     box.innerText = "O";
     box.disabled = true;
