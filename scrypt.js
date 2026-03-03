@@ -3,6 +3,8 @@ let resetBtn = document.querySelector("#reset-btn");
 let newGameBtn = document.querySelector("#new-btn");
 let msgContainer = document.querySelector(".msg-container");
 let msg = document.querySelector("#msg");
+const clickSound = new Audio("clicks.mp3");
+let loseSound = new Audio("fahh.mp3");
 
 // let turnO = true; //playerX, playerO
 let isPlayerTurn = true;  // Player = O
@@ -74,6 +76,10 @@ boxes.forEach((box, index) => {
   navigator.vibrate(100);
 }
 
+    // 🔊 Sound play
+    clickSound.currentTime = 0; 
+    clickSound.play();
+
     // Player move
     box.innerText = "O";
     box.disabled = true;
@@ -87,7 +93,7 @@ boxes.forEach((box, index) => {
       return;
     }
 
-    // isPlayerTurn = true;
+    isPlayerTurn = false;
     setTimeout(computerMove, 500);
   });
 });
@@ -184,16 +190,40 @@ const enableBoxes = () => {
   }
 };
 
+// const showWinner = (winner) => {
+
+//   if ("vibrate" in navigator) {
+//   navigator.vibrate([200, 100, 200]);
+// }
+
+//   msg.innerText = `Congratulations, Winner is ${winner}`;
+//   msgContainer.classList.remove("hide");
+//   disableBoxes();
+// };
+
+
+// let loseSound = new Audio("clicks.mp3"); // <-- ekhane tomar lose sound file path dibey
+
 const showWinner = (winner) => {
 
   if ("vibrate" in navigator) {
-  navigator.vibrate([200, 100, 200]);
-}
+    navigator.vibrate([200, 100, 200]);
+  }
+
+  // 🔴 Computer jitle lose sound
+  if (winner === "X") {
+    loseSound.currentTime = 0;
+    loseSound.play();
+  }
 
   msg.innerText = `Congratulations, Winner is ${winner}`;
   msgContainer.classList.remove("hide");
   disableBoxes();
 };
+
+
+
+
 
 const checkWinner = () => {
   for (let pattern of winPatterns) {
@@ -212,5 +242,3 @@ const checkWinner = () => {
 
 newGameBtn.addEventListener("click", resetGame);
 resetBtn.addEventListener("click", resetGame);
-
-
