@@ -5,6 +5,7 @@ let msgContainer = document.querySelector(".msg-container");
 let msg = document.querySelector("#msg");
 const clickSound = new Audio("clicks.mp3");
 let loseSound = new Audio("fahh.mp3");
+let winSound = new Audio("chalo.mp3");
 
 // let turnO = true; //playerX, playerO
 let isPlayerTurn = true;  // Player = O
@@ -216,6 +217,23 @@ const showWinner = (winner) => {
     loseSound.play();
   }
 
+if (winner === "O") {
+    winSound.currentTime = 0;
+    winSound.play();
+  }
+
+msg.innerText = `Congratulations, Winner is ${winner}`;
+  msgContainer.classList.remove("hide");
+
+  confetti({
+    particleCount: 150,
+    spread: 100,
+    origin: { y: 0.6 }
+  });
+
+  disableBoxes();
+
+
   msg.innerText = `Congratulations, Winner is ${winner}`;
   msgContainer.classList.remove("hide");
   disableBoxes();
@@ -242,3 +260,5 @@ const checkWinner = () => {
 
 newGameBtn.addEventListener("click", resetGame);
 resetBtn.addEventListener("click", resetGame);
+
+
