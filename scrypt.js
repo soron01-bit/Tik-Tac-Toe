@@ -261,4 +261,3 @@ const checkWinner = () => {
 newGameBtn.addEventListener("click", resetGame);
 resetBtn.addEventListener("click", resetGame);
 
-
